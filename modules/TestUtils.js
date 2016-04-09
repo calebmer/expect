@@ -1,5 +1,6 @@
 import isEqual from 'is-equal'
 import isRegExp from 'is-regex'
+import assert from './assert'
 
 /**
  * Returns true if the given object is a function.
@@ -71,33 +72,56 @@ export const functionThrows = (fn, context, args, value) => {
  * otherwise. The compareValues function must return false to
  * indicate a non-match.
  */
-export const arrayContains = (array, value, compareValues) => {
-  if (compareValues == null)
-    compareValues = isEqual
-
-  return array.some(item => compareValues(item, value) !== false)
-}
+export const arrayContains = (array, value, compareValues) =>
+  array.some(item => compareValues(item, value) !== false)
 
 /**
  * Returns true if the given object contains the value, false
  * otherwise. The compareValues function must return false to
  * indicate a non-match.
  */
-export const objectContains = (object, value, compareValues) => {
-  if (compareValues == null)
-    compareValues = isEqual
-
-  return Object.keys(value).every(k => {
+export const objectContains = (object, value, compareValues) =>
+  Object.keys(value).every(k => {
     if (isObject(object[k])) {
       return objectContains(object[k], value[k], compareValues)
     }
 
     return compareValues(object[k], value[k])
   })
-}
 
 /**
  * Returns true if the given string contains the value, false otherwise.
  */
 export const stringContains = (string, value) =>
   string.indexOf(value) !== -1
+
+/**
+ * Helper function which abstracts away the core
+ * functionality from the `toInclude`/`toExclude` methods.
+ */
+export const containsHelper = (actual, value, compareValues, exclude, funcName, message) => {
+  if (compareValues == null)
+    compareValues = isEqual
+
+  assert(
+    isArray(actual) || isObject(actual) || typeof actual === 'string',
+    `The "actual" argument in expect(actual).${funcName}() must be an array, object, or a string`
+  )
+
+  let condition = false
+
+  if (isArray(actual)) {
+    condition = arrayContains(actual, value, compareValues)
+  } else if (isObject(actual)) {
+    condition = objectContains(actual, value, compareValues)
+  } else {
+    condition = stringContains(actual, value)
+  }
+
+  assert(
+    exclude ? !condition : condition,
+    message,
+    actual,
+    value
+  )
+}

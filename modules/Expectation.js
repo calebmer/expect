@@ -4,13 +4,9 @@ import assert from './assert'
 import { isSpy } from './SpyUtils'
 import {
   functionThrows,
-  arrayContains,
-  stringContains,
-  objectContains,
-  isArray,
-  isObject,
   isFunction,
-  isA
+  isA,
+  containsHelper
 } from './TestUtils'
 
 /**
@@ -294,72 +290,37 @@ class Expectation {
   }
 
   toInclude(value, compareValues, message) {
-    assert(
-      isArray(this.actual) || isObject(this.actual) || typeof this.actual === 'string',
-      'The "actual" argument in expect(actual).toInclude() must be an array, object, or a string'
-    )
-
     if (typeof compareValues === 'string') {
       message = compareValues
       compareValues = null
     }
 
-    message = message || 'Expected %s to include %s'
-
-    if (isArray(this.actual)) {
-      assert(
-        arrayContains(this.actual, value, compareValues),
-        message,
-        this.actual,
-        value
-      )
-    } else if (isObject(this.actual)) {
-      assert(
-        objectContains(this.actual, value, compareValues),
-        message,
-        this.actual,
-        value
-      )
-    } else {
-      assert(
-        stringContains(this.actual, value),
-        message,
-        this.actual,
-        value
-      )
-    }
+    containsHelper(
+      this.actual,
+      value,
+      compareValues,
+      false,
+      'toInclude',
+      message || 'Expected %s to include %s'
+    )
 
     return this
   }
 
   toExclude(value, compareValues, message) {
-    assert(
-      isArray(this.actual) || typeof this.actual === 'string',
-      'The "actual" argument in expect(actual).toExclude() must be an array or a string'
-    )
-
     if (typeof compareValues === 'string') {
       message = compareValues
       compareValues = null
     }
 
-    message = message || 'Expected %s to exclude %s'
-
-    if (isArray(this.actual)) {
-      assert(
-        !arrayContains(this.actual, value, compareValues),
-        message,
-        this.actual,
-        value
-      )
-    } else {
-      assert(
-        !stringContains(this.actual, value),
-        message,
-        this.actual,
-        value
-      )
-    }
+    containsHelper(
+      this.actual,
+      value,
+      compareValues,
+      true,
+      'toExclude',
+      message || 'Expected %s to exclude %s'
+    )
 
     return this
   }
