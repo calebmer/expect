@@ -82,10 +82,16 @@ export const arrayContains = (array, value, compareValues) => {
  * Returns true if the given object contains the value, false
  * otherwise. The compareValues function must return false to
  * indicate a non-match.
+ *
+ * If the value is a string returns true if a value exists on
+ * the object for the string property.
  */
 export const objectContains = (object, value, compareValues) => {
   if (compareValues == null)
     compareValues = isEqual
+
+  if (typeof value === 'string')
+    return object.hasOwnProperty(value)
 
   return Object.keys(value).every(k => {
     if (isObject(object[k])) {
