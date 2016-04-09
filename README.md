@@ -258,7 +258,6 @@ expect([ 1, 2, 3 ]).toExclude(4)
 Asserts the given `object` contains all keys and values in `value`, recursively. The `comparator` function, if given, should compare two objects and either `return false` or `throw` if they are not equal. It defaults to `assert.deepEqual`.
 
 ```js
-expect({ a: 1, b: 2 }).toInclude('a')
 expect({ a: 1, b: 2 }).toInclude({ b: 2 })
 expect({ a: 1, b: 2, c: { d: 3 } }).toInclude({ b: 2, c: { d: 3 } })
 ```
@@ -271,7 +270,6 @@ expect({ a: 1, b: 2, c: { d: 3 } }).toInclude({ b: 2, c: { d: 3 } })
 Asserts the given `object` does not contain all keys and values in `value`, recursively. The `comparator` function, if given, should compare two objects and either `return false` or `throw` if they are not equal. It defaults to `assert.deepEqual`.
 
 ```js
-expect({ a: 1, b: 2 }).toExclude('c')
 expect({ a: 1, b: 2 }).toExclude({ c: 2 })
 expect({ a: 1, b: 2 }).toExclude({ b: 3 })
 expect({ a: 1, b: 2, c: { d: 3 } }).toExclude({ c: { d: 4 } })

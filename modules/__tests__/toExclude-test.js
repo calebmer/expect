@@ -19,18 +19,6 @@ describe('toExclude', () => {
     }).toThrow(/to exclude/)
   })
 
-  it('throws when an object contains an expected key', () => {
-    expect(() => {
-      expect({ a: 1 }).toExclude('a')
-    }).toThrow(/to exclude/)
-  })
-
-  it('does not throw when an object contains an unexpected key', () => {
-    expect(() => {
-      expect({ a: 1 }).toExclude('b')
-    }).toNotThrow()
-  })
-
   it('throws when an object contains an expected object', () => {
     expect(() => {
       expect({ a: 1 }).toExclude({ a: 1 })

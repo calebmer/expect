@@ -20,18 +20,6 @@ describe('toInclude', () => {
     }).toNotThrow()
   })
 
-  it('does not throw when an object contains an expected key', () => {
-    expect(() => {
-      expect({ a: 1 }).toInclude('a')
-    }).toNotThrow()
-  })
-
-  it('throws when an object contains an unexpected key', () => {
-    expect(() => {
-      expect({ a: 1 }).toInclude('b')
-    }).toThrow(/to include/)
-  })
-
   it('does not throw when an object contains an expected object', () => {
     expect(() => {
       expect({ a: 1, b: 2, c: 3 }).toInclude({ b: 2 })
