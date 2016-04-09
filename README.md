@@ -299,6 +299,32 @@ expect('hello world').toExclude('goodbye')
 expect('hello world').toNotContain('goodbye')
 ```
 
+### toIncludeKeys
+> `expect(object).toIncludeKeys(keys, [hasKey], [message])`<br>
+> `expect(object).toIncludeKey(keys, [hasKey], [message])`<br>
+> `expect(object).toContainKeys(keys, [hasKey], [message])`<br>
+> `expect(object).toContainKey(keys, [hasKey], [message])`
+
+Asserts that the given `object` (may be an array, or a function, or anything with keys) contains *all* of the provided keys.
+
+```js
+expect({ a: 1 }).toIncludeKey('a')
+expect({ a: 1, b: 2 }).toIncludeKeys([ 'a', 'b' ])
+```
+
+### toExcludeKeys
+> `expect(object).toExcludeKeys(keys, [hasKey], [message])`<br>
+> `expect(object).toExcludeKey(keys, [hasKey], [message])`<br>
+> `expect(object).toNotContainKeys(keys, [hasKey], [message])`<br>
+> `expect(object).toNotContainKey(keys, [hasKey], [message])`
+
+Asserts that the given `object` (may be an array, or a function, or anything with keys) does not contain *any* of the provided keys.
+
+```js
+expect({ a: 1 }).toExcludeKey('b')
+expect({ a: 1, b: 2 }).toExcludeKey([ 'c', 'd' ])
+```
+
 ### (spy) toHaveBeenCalled
 
 > `expect(spy).toHaveBeenCalled([message])`

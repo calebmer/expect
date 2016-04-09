@@ -6,7 +6,8 @@ import {
   functionThrows,
   isFunction,
   isA,
-  containsHelper
+  containsHelper,
+  containKeysHelper
 } from './TestUtils'
 
 /**
@@ -325,6 +326,42 @@ class Expectation {
     return this
   }
 
+  toIncludeKeys(keys, hasKey, message) {
+    if (typeof hasKey === 'string') {
+      message = hasKey
+      hasKey = null
+    }
+
+    containKeysHelper(
+      this.actual,
+      keys,
+      hasKey,
+      false,
+      'toIncludeKeys',
+      message || 'Expected %s to include key(s) %s'
+    )
+
+    return this
+  }
+
+  toExcludeKeys(keys, hasKey, message) {
+    if (typeof hasKey === 'string') {
+      message = hasKey
+      hasKey = null
+    }
+
+    containKeysHelper(
+      this.actual,
+      keys,
+      hasKey,
+      true,
+      'toExcludeKeys',
+      message || 'Expected %s to exclude key(s) %s'
+    )
+
+    return this
+  }
+
   toHaveBeenCalled(message) {
     const spy = this.actual
 
@@ -407,7 +444,13 @@ const aliases = {
   toBeFewerThan: 'toBeLessThan',
   toBeMoreThan: 'toBeGreaterThan',
   toContain: 'toInclude',
-  toNotContain: 'toExclude'
+  toNotContain: 'toExclude',
+  toIncludeKey: 'toIncludeKeys',
+  toExcludeKey: 'toExcludeKeys',
+  toContainKey: 'toIncludeKey',
+  toNotContainKey: 'toExcludeKey',
+  toContainKeys: 'toIncludeKeys',
+  toNotContainKeys: 'toExcludeKeys'
 }
 
 for (const alias in aliases)

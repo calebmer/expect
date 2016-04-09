@@ -1,5 +1,6 @@
 import isEqual from 'is-equal'
 import isRegExp from 'is-regex'
+import has from 'has'
 import assert from './assert'
 
 /**
@@ -123,5 +124,33 @@ export const containsHelper = (actual, value, compareValues, exclude, funcName, 
     message,
     actual,
     value
+  )
+}
+
+/**
+ * Helper function which abstracts away the core
+ * functionality from the `toIncludeKeys`/`toExcludeKeys`
+ * methods.
+ */
+export const containKeysHelper = (actual, keys, hasKey, exclude, funcName, message) => {
+  if (!isArray(keys))
+    keys = [ keys ]
+
+  if (hasKey == null)
+    hasKey = has
+
+  assert(
+    typeof actual === 'object',
+    `The "actual" argument in expect(actual).${funcName}() must be an object, not %s`,
+    typeof actual
+  )
+
+  const condition = keys.reduce((previous, key) => previous && hasKey(actual, key), true)
+
+  assert(
+    exclude ? !condition : condition,
+    message,
+    actual,
+    keys.join(', ')
   )
 }
